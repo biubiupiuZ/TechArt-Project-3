@@ -1,4 +1,3 @@
-#coding:utf-8
 from __builtin__ import long
 from PySide2 import QtWidgets, QtCore, QtGui
 import pymel.core as pm
@@ -18,9 +17,8 @@ logger.setLevel(logging.DEBUG)
 
 
 def getMayaMainWindow():
-    # 通过OpenMayaUI API 获取Maya主窗口
+    # Get Maya main window through OpenMayaUI API
     win = omui.MQtUtil_mainWindow()
-    # 将窗口转换成Python可以识别的东西 这里是将它转换为QMainWindow
     ptr = wrapInstance(long(win), QtWidgets.QMainWindow)
     return ptr
 
@@ -50,7 +48,6 @@ class LightManager(QtWidgets.QWidget):
 
     def __init__(self, dock=True):
         # parent = getMayaMainWindow()
-        # 如果设置 dock 窗口 执行 getdock 函数
         if dock:
             parent = getDock()
         else:
@@ -85,7 +82,7 @@ class LightManager(QtWidgets.QWidget):
                 widget.setVisible(False)
                 widget.deleteLater()
 
-        # 循环场景中所有的灯光元素
+        # Loop all light element in sense
         for light in pm.ls(type=["areaLight", "spotLight", "pointLight", "directionalLight", "volumeLight"]):
             self.addLight(light)
 
@@ -205,7 +202,6 @@ class LightManager(QtWidgets.QWidget):
         if not lightType:
             lightType = self.lightTypeCB.currentText()
 
-        # Get 去到 lightTypes 的字典中 找到相关的函数进行调用
         func = self.lightTypes[lightType]
         light = func()
 
@@ -215,7 +211,6 @@ class LightManager(QtWidgets.QWidget):
         return light
 
     def addLight(self, light):
-        # 添加滚动区域的组件
         widget = LightWidget(light)
         self.scrollLayout.addWidget(widget)
         widget.onSolo.connect(self.onSolo)
@@ -243,7 +238,7 @@ class LightWidget(QtWidgets.QWidget):
         if isinstance(light, pm.nodetypes.Transform):
             light = light.getShape()
 
-        # 存储 shape 节点
+        # Save shape node
         self.light = light
         self.buildUI()
 

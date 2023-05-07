@@ -20,7 +20,7 @@ def tween(percentage, obj=None, attrs=None, selection=True):
 
     # Loop all attrs
     for attr in attrs:
-        # 获取参数的全名
+        # Get full name
         attrFull = '%s.%s' % (obj, attr)
 
         # check keyframe
